@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
+		  xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8" 
+		pageEncoding="UTF-8" session="false"/>
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+<html xmlns="http://www.w3.org/1999/xhtml">
+<link rel="StyleSheet" href="${pageContext.request.contextPath}/res/mc.css" type="text/css" title="cse4413" media="screen, print"/>
+
+<head>
+<title>SIS Reporting Engine</title>
+</head>
+<body>
+
+    
+	<form onsubmit="return validate();" action="" method="post">
+		<fieldset>
+			<legend>SIS Reporting Engine</legend>
+			<c:if test="${not empty error}">
+    		<p id="error">${error.message}</p>
+    		</c:if>
+			<label for="lastName">Last Name</label>
+			<input value="${lastName}" id="lastName" name="lastName" type="text"/><br/>
+			<label for="gpa">Minimum GPA</label>
+			<input value="${gpa}" id="gpa" name="gpa" type="text"/><br/>
+			<label for="sortBy">Sort By</label>
+			<select id="sortBy" name="sortBy">
+				<option value="NONE" selected="selected">Select One:</option>
+				<option value="SURNAME">Last Name</option>
+				<option value="MAJOR">Major</option>
+				<option value="COURSES">Number of Courses</option>
+				<option value="GPA">GPA</option>
+				<option value="YEARADMITTED">Year of Admitted</option>
+			</select>
+			<br/>
+			<label for="year">Year of Admitted: </label>
+			<select id="year" name="year">
+			    <option value="ANY">ANY YEAR</option>  
+				<c:forEach var="item" items="${syears}">
+	            <option value="${item.year}">${item.year}</option>
+				</c:forEach>		
+			</select><br/>
+			<input value="Report" id="do" name="report" type="submit"/>
+			<input value="Generate XML" id="do" name="generate" type="submit"/>
+		</fieldset>
+	</form>
+	<div id="result">
+		<p>Sorted by: ${sortBy}</p>
+		<table>
+			<tr>
+				<th>Name</th><th>Major</th><th>Courses</th><th>GPA</th><th>Year of Admitted</th>
+			</tr>
+			<c:if test="${sBeans!=null}">
+				
+				<c:forEach var="item" items="${sBeans}">
+				<tr>	
+					<td>${item.name}</td>
+					<td>${item.major}</td>
+					<td>${item.courses}</td>
+					<td>${item.gpa}</td>
+					<td>${item.year}</td>
+				</tr>
+				</c:forEach>
+			</c:if>
+		</table>
+	</div>
+</body>
+</html>
+</jsp:root>
